@@ -59,8 +59,7 @@ class Test:
         tv.volume_up()
         assert str(tv) == "Power = [True], Channel = [0], Volume = [2]"
         tv.volume_up()
-        assert str(tv) == "Power = [True], Channel = [0], Volume = [2]"  # Max volume should not exceed 2
-
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [2]" 
     def test_volume_down(self):
         tv = Television()
         tv.power()
