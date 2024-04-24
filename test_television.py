@@ -1,56 +1,76 @@
-import unittest
-
 import pytest
-from television import *
+from television import Television
 
-class MyTestCase(unittest.TestCase):
+
+class Test:
     def test_init(self):
-        self.assertEqual(Television()._Television__status, False)
-        self.assertEqual(Television()._Television__muted, False)
-        self.assertEqual(Television()._Television__volume, 0)
-        self.assertEqual(Television()._Television__channel, 0)
+        assert str(Television()) == "Power = [False], Channel = [0], Volume = [0]"
 
     def test_power(self):
         tv = Television()
         tv.power()
-        self.assertEqual(tv._Television__status, True)
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
+        tv.power()
+        assert str(tv) == "Power = [False], Channel = [0], Volume = [0]"
 
     def test_mute(self):
         tv = Television()
+        tv.power()
         tv.mute()
-        self.assertEqual(tv._Television__muted, False)
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
+        tv.mute()
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
+        tv.power()
+        tv.mute()
+        assert str(tv) == "Power = [False], Channel = [0], Volume = [0]"
+        tv.power()
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
 
     def test_channel_up(self):
         tv = Television()
+        tv.power()
         tv.channel_up()
-        self.assertEqual(tv._Television__channel, 0)
-        tv._Television__channel = 0
+        assert str(tv) == "Power = [True], Channel = [1], Volume = [0]"
         tv.channel_up()
-        self.assertEqual(tv._Television__channel, 0)
+        assert str(tv) == "Power = [True], Channel = [2], Volume = [0]"
+        tv.channel_up()
+        assert str(tv) == "Power = [True], Channel = [3], Volume = [0]"
+        tv.channel_up()
+        assert str(
+            tv) == "Power = [True], Channel = [0], Volume = [0]"
 
     def test_channel_down(self):
         tv = Television()
+        tv.power()
         tv.channel_down()
-        self.assertEqual(tv._Television__channel, 0)
-        tv._Television__channel = 3
+        assert str(tv) == "Power = [True], Channel = [3], Volume = [0]"
         tv.channel_down()
-        self.assertEqual(tv._Television__channel, 3)
+        assert str(tv) == "Power = [True], Channel = [2], Volume = [0]"
+        tv.channel_down()
+        assert str(tv) == "Power = [True], Channel = [1], Volume = [0]"
+        tv.channel_down()
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
 
     def test_volume_up(self):
         tv = Television()
+        tv.power()
         tv.volume_up()
-        self.assertEqual(tv._Television__volume, 0)
-        tv._Television__volume = 2
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [1]"
         tv.volume_up()
-        self.assertEqual(tv._Television__volume, 2)
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [2]"
+        tv.volume_up()
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [2]"  # Max volume should not exceed 2
 
     def test_volume_down(self):
         tv = Television()
+        tv.power()
         tv.volume_down()
-        self.assertEqual(tv._Television__volume, 0)
-        tv._Television__volume = 0
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
         tv.volume_down()
-        self.assertEqual(tv._Television__volume, 0)
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [0]"
+        tv.volume_up()
+        tv.volume_down()
+        assert str(tv) == "Power = [True], Channel = [0], Volume = [1]"
 
-if __name__ == '__main__':
-    unittest.main()
+    if __name__ == "__main__":
+        pytest.main()
